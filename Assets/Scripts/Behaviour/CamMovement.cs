@@ -26,14 +26,29 @@ public class CamMovement : MonoBehaviour
 
         moveCamera();
 
+        rotateCamera();
+
     }
 
     private void moveCamera()
     {
         float xMovement = Input.GetAxis("Horizontal")    * moveSpeed * Time.deltaTime;
-        float zMovement = Input.GetAxis("Vertical")      * moveSpeed * Time.deltaTime;
+        float yMovement = Input.GetAxis("Vertical")      * moveSpeed * Time.deltaTime;
 
-        playerCam.transform.Translate(xMovement, zMovement, 0);
+        playerCam.transform.Translate(xMovement, yMovement, yMovement);
+    }
+
+    private void rotateCamera()
+    {
+        float camRotationX = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
+
+        if(Input.GetMouseButton(1))
+        {
+        
+            playerCam.transform.RotateAround(Vector3.up, camRotationX);
+        
+        }
+        
     }
     
 }
