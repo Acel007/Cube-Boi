@@ -9,8 +9,9 @@ public class CamMovement : MonoBehaviour
 
     public float moveSpeed = 1.0f;
     public float rotationSpeed = 1.0f;
-
-
+    public float zoomSpeed = 1.0f;
+    public float minimumZoomY = 20.0f;
+    public float maximumZoomY = 4.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,8 @@ public class CamMovement : MonoBehaviour
 
         rotateCamera();
 
+        zoomCamera(minimumZoomY, maximumZoomY);
+
     }
 
     private void moveCamera()
@@ -38,6 +41,19 @@ public class CamMovement : MonoBehaviour
         playerCam.transform.Translate(xMovement, yMovement, yMovement);
     }
 
+    private void zoomCamera(float minZoom, float maxZoom)
+    {
+        float zoom = Input.mouseScrollDelta.y;
+        float currentCamY = playerCam.transform.position.y;
+
+        if( (currentCamY > minZoom && currentCamY < maxZoom) || (currentCamY <= minZoom && zoom < 0) || (currentCamY >= maxZoom && zoom >= 1) )
+        {
+        
+            playerCam.transform.Translate(0, 0, zoom);
+        
+        }
+    }
+
     private void rotateCamera()
     {
         float camRotationX = Input.GetAxis("Mouse X") * rotationSpeed * Time.deltaTime;
@@ -45,7 +61,7 @@ public class CamMovement : MonoBehaviour
         if(Input.GetMouseButton(1))
         {
         
-            playerCam.transform.RotateAround(Vector3.up, camRotationX);
+          playerCam.transform.Rotate(Vector3.up, camRotationX, Space.World);
         
         }
         
